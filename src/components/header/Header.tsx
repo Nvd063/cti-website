@@ -1,6 +1,4 @@
-
 "use client";
-
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -11,7 +9,6 @@ import {
   Menu,
   X,
 } from "lucide-react";
-
 const navLinks = [
   { name: "Home", href: "/" },
   { name: "Store", href: "/store" },
@@ -19,69 +16,69 @@ const navLinks = [
   { name: "Services", href: "/services" },
   { name: "Blog", href: "/blog" },
 ];
-
 export default function Navbar() {
   const pathname = usePathname();
-
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-
   const isHome = pathname === "/";
-  const isGlass = isHome && !scrolled && !menuOpen;
-
+  const isGlass = isHome && !scrolled;
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 30);
     };
-
     handleScroll();
-
     window.addEventListener("scroll", handleScroll, {
       passive: true,
     });
-
     return () =>
       window.removeEventListener("scroll", handleScroll);
   }, []);
-
   useEffect(() => {
     if (!menuOpen) return;
-
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setMenuOpen(false);
       }
     };
-
     window.addEventListener("keydown", handleKeyDown);
-
     return () =>
       window.removeEventListener("keydown", handleKeyDown);
   }, [menuOpen]);
-
+  useEffect(() => {
+    const media = window.matchMedia("(min-width: 1024px)");
+    const closeOnDesktop = () => { if (media.matches) setMenuOpen(false); };
+    media.addEventListener("change", closeOnDesktop);
+    return () => media.removeEventListener("change", closeOnDesktop);
+  }, []);
   const isActive = (href: string) =>
     href === "/"
       ? pathname === "/"
       : pathname === href ||
         pathname.startsWith(`${href}/`);
-
   return (
     <header
       className={`
-        z-50 w-full
+        z-50 w-full pointer-events-none
         px-3 sm:px-6 lg:px-10
         transition-all duration-500
         ${
           isHome
-            ? "sticky top-0 lg:fixed lg:inset-x-0 lg:top-0"
+            ? "fixed inset-x-0 top-0"
             : "sticky top-0"
         }
         ${scrolled ? "py-2" : "py-3 lg:py-4"}
       `}
     >
+      <button
+        type="button"
+        aria-label="Close navigation overlay"
+        tabIndex={-1}
+        onClick={() => setMenuOpen(false)}
+        className={`fixed inset-0 bg-[#08152d]/35 backdrop-blur-sm transition-opacity duration-300 motion-reduce:transition-none lg:hidden ${menuOpen ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"}`}
+      />
       <div
         className={`
-          relative mx-auto max-w-[1600px]
+          relative mx-auto max-w-[1600px] pointer-events-auto z-10
           rounded-[22px] lg:rounded-[28px]
           border
           backdrop-blur-2xl backdrop-saturate-150
@@ -102,7 +99,6 @@ export default function Navbar() {
         `}
       >
         {/* Liquid Glass Reflection */}
-
         <div
           aria-hidden="true"
           className="
@@ -111,7 +107,6 @@ export default function Navbar() {
             from-transparent via-white to-transparent
           "
         />
-
         <div
           className="
             relative flex items-center justify-between
@@ -122,7 +117,6 @@ export default function Navbar() {
           "
         >
           {/* Original CTI Logo */}
-
           <Link
             href="/"
             aria-label="CTI System and Solutions Home"
@@ -147,9 +141,7 @@ export default function Navbar() {
               "
             />
           </Link>
-
           {/* Desktop Navigation */}
-
           <nav
             aria-label="Main navigation"
             className="
@@ -189,7 +181,6 @@ export default function Navbar() {
                 `}
               >
                 {link.name}
-
                 {isActive(link.href) && (
                   <span
                     className="
@@ -202,13 +193,9 @@ export default function Navbar() {
               </Link>
             ))}
           </nav>
-
           {/* Right Side Actions */}
-
           <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-
             {/* Hotline */}
-
             <a
               href="tel:+923008443454"
               aria-label="Call CTI hotline"
@@ -225,9 +212,7 @@ export default function Navbar() {
             >
               <Phone size={19} strokeWidth={1.8} />
             </a>
-
             {/* Contact Button */}
-
             <Link
               href="/contact"
               onClick={() => setMenuOpen(false)}
@@ -243,11 +228,9 @@ export default function Navbar() {
               "
             >
               <span className="sm:hidden">Contact</span>
-
               <span className="hidden sm:inline">
                 Contact Our Team
               </span>
-
               <ArrowUpRight
                 size={17}
                 className="
@@ -257,9 +240,7 @@ export default function Navbar() {
                 "
               />
             </Link>
-
             {/* Mobile Menu Button */}
-
             <button
               type="button"
               onClick={() =>
@@ -287,24 +268,21 @@ export default function Navbar() {
             </button>
           </div>
         </div>
-
         {/* Mobile Navigation */}
-
         <div
           id="mobile-navigation"
           inert={!menuOpen}
           className={`
-            grid transition-all duration-300 lg:hidden
+            absolute inset-x-0 top-[calc(100%+8px)] origin-top rounded-[22px] border border-white/70 bg-white/85 shadow-[0_16px_48px_rgba(8,21,45,0.22)] backdrop-blur-2xl backdrop-saturate-150 transition-all duration-300 ease-out motion-reduce:transition-none lg:hidden
             ${
               menuOpen
-                ? "grid-rows-[1fr] opacity-100"
-                : "grid-rows-[0fr] opacity-0"
+                ? "visible translate-y-0 scale-100 opacity-100"
+                : "invisible pointer-events-none -translate-y-2 scale-[0.98] opacity-0"
             }
           `}
         >
-          <div className="overflow-hidden">
-            <div className="mx-4 border-t border-slate-200/70 pb-4 pt-3">
-
+          <div className="max-h-[calc(100dvh-112px)] overflow-y-auto overscroll-contain">
+            <div className="mx-3 pb-3 pt-3">
               <p
                 className="
                   mb-3 px-3 text-[10px] font-bold
@@ -313,7 +291,6 @@ export default function Navbar() {
               >
                 EXPLORE CTI
               </p>
-
               <nav
                 aria-label="Mobile navigation"
                 className="flex flex-col gap-1.5"
@@ -330,7 +307,7 @@ export default function Navbar() {
                     }
                     className={`
                       flex items-center justify-between
-                      rounded-xl px-4 py-3.5
+                      rounded-xl px-4 py-3
                       text-sm font-semibold
                       transition-all duration-300
                       ${
@@ -353,21 +330,17 @@ export default function Navbar() {
                       >
                         {String(index + 1).padStart(2, "0")}
                       </span>
-
                       {link.name}
                     </span>
-
                     <ArrowUpRight size={15} />
                   </Link>
                 ))}
               </nav>
-
               {/* Mobile Hotline */}
-
               <a
                 href="tel:+923008443454"
                 className="
-                  mt-4 flex items-center justify-between
+                  mt-3 flex items-center justify-between
                   rounded-xl border border-white/80
                   bg-white/70 px-4 py-3
                 "
@@ -381,12 +354,10 @@ export default function Navbar() {
                   >
                     CTI HOTLINE
                   </p>
-
                   <p className="mt-1 text-sm font-bold text-[#202f60]">
                     +92 300 8443454
                   </p>
                 </div>
-
                 <span className="flex items-center gap-2 text-sm font-semibold text-[#e60019]">
                   Call Now
                   <ArrowUpRight size={15} />

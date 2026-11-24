@@ -165,7 +165,7 @@ export default function CoreServices() {
               SERVICES GRID
           ========================================= */}
 
-          <div className="grid auto-rows-fr grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid auto-rows-fr grid-cols-2 gap-2.5 sm:gap-4 lg:grid-cols-4">
 
             {services.map((service, index) => (
 
@@ -226,7 +226,7 @@ export default function CoreServices() {
                       src={service.image}
                       alt={service.title}
                       fill
-                      sizes="(max-width: 639px) 90vw, (max-width: 1023px) 45vw, 25vw"
+                      sizes="(max-width: 1023px) 45vw, 25vw"
                       className="
                         object-cover object-center
                         transition-transform duration-700
@@ -318,7 +318,7 @@ export default function CoreServices() {
                       flex min-h-[64px] flex-1
                       items-center justify-between
                       gap-2 bg-[#0b162c]
-                      px-4 py-3
+                      px-2 py-2 sm:px-4 sm:py-3
                       transition-colors duration-300
                       group-hover:bg-[#203164]
                     "
@@ -326,7 +326,7 @@ export default function CoreServices() {
 
                     {/* SERVICE NAME */}
 
-                    <h3 className="text-[14px] font-bold leading-snug text-white lg:text-[15px]">
+                    <h3 className="text-[11px] font-bold leading-snug text-white sm:text-[14px] lg:text-[15px]">
                       {service.name}
                     </h3>
 
