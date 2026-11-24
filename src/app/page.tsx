@@ -5,6 +5,7 @@ import Certifications from "@/components/home/Certifications";
 import NationwideCoverage from "@/components/home/NationwideCoverage";
 import CustomerReviews from "@/components/home/CustomerReviews";
 import Portfolio from "@/components/home/Portfolio";
+import PartnerBrands from "@/components/home/PartnerBrands";
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
       <NationwideCoverage />
       <CustomerReviews />
       <Portfolio />
+      <PartnerBrands />
     </main>
   );
 }
