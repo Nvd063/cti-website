@@ -1,4 +1,3 @@
-
 "use client";
 
 import Image from "next/image";
@@ -114,10 +113,8 @@ export default function CoreServices() {
       className="relative overflow-hidden bg-white py-16 md:py-24"
     >
       <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
-
         {/* Section Heading */}
         <div className="mb-10 flex flex-col justify-between gap-6 lg:mb-14 lg:flex-row lg:items-end">
-
           <div>
             <div className="mb-5 flex items-center gap-3">
               <span className="h-2 w-2 rounded-full bg-red-600" />
@@ -133,15 +130,12 @@ export default function CoreServices() {
             >
               Technology that protects.
               <br />
-              <span className="text-[#203164]">
-                Innovation that connects.
-              </span>
+              <span className="text-[#203164]">Innovation that connects.</span>
             </h2>
 
             <p className="mt-5 max-w-xl text-sm leading-relaxed text-slate-500 md:text-base">
-              Explore our integrated safety, security,
-              automation and energy solutions for modern
-              infrastructure.
+              Explore our integrated safety, security, automation and energy
+              solutions for modern infrastructure.
             </p>
           </div>
 
@@ -157,20 +151,71 @@ export default function CoreServices() {
           </Link>
         </div>
 
-        {/* Interactive Services Explorer */}
-        <div className="grid items-start gap-5 lg:grid-cols-[360px_minmax(0,1fr)] lg:gap-8">
+        {/* Mobile & Tablet Services Grid */}
+        <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:hidden">
+          {services.map((item, index) => {
+            const Icon = item.icon;
 
+            return (
+              <Link
+                key={item.slug}
+                href={`/services/${item.slug}`}
+                className="group flex min-w-0 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:border-[#203164]/30 hover:shadow-lg"
+              >
+                {/* Service Image */}
+                <div className="relative aspect-[8/5] w-full overflow-hidden bg-slate-100">
+                  <Image
+                    src={item.image}
+                    alt={item.title}
+                    fill
+                    sizes="(max-width: 639px) 50vw, 45vw"
+                    className="object-contain transition-transform duration-500 group-hover:scale-105"
+                  />
+
+                  {/* Service Number */}
+                  <span className="absolute left-2 top-2 rounded-md bg-[#08152d]/90 px-2 py-1 text-[10px] font-semibold text-white">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                </div>
+
+                {/* Service Content */}
+                <div className="flex flex-1 flex-col p-3 sm:p-5">
+                  {/* Service Icon */}
+                  <div className="mb-3 flex h-8 w-8 items-center justify-center rounded-lg bg-[#203164]/5 text-[#203164] sm:h-10 sm:w-10">
+                    <Icon size={18} strokeWidth={1.7} />
+                  </div>
+
+                  {/* Service Title */}
+                  <h3 className="mb-4 text-[13px] font-bold leading-snug text-[#08152d] sm:text-lg">
+                    {item.name}
+                  </h3>
+
+                  {/* Explore Button */}
+                  <div className="mt-auto flex items-center justify-between gap-1 border-t border-slate-100 pt-3">
+                    <span className="text-[11px] font-semibold text-[#203164] sm:text-sm">
+                      Explore Service
+                    </span>
+
+                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#203164] text-white transition-colors group-hover:bg-red-600 sm:h-9 sm:w-9">
+                      <ArrowUpRight size={14} />
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+
+        {/* Interactive Services Explorer */}
+        <div className="hidden items-start gap-8 lg:grid lg:grid-cols-[360px_minmax(0,1fr)]">
           {/* Left Side - Services Navigation */}
           <div className="rounded-2xl border border-slate-200 bg-[#f7f8fa] p-2 sm:p-3">
-
             <div className="flex items-center justify-between px-3 pb-4 pt-3">
               <span className="text-xs font-bold uppercase tracking-widest text-slate-500">
                 Explore Solutions
               </span>
 
-              <span className="text-xs font-semibold text-red-600">
-                09
-              </span>
+              <span className="text-xs font-semibold text-red-600">09</span>
             </div>
 
             <div
@@ -211,10 +256,7 @@ export default function CoreServices() {
                     </span>
 
                     {isActive ? (
-                      <ArrowUpRight
-                        size={17}
-                        className="shrink-0 text-white"
-                      />
+                      <ArrowUpRight size={17} className="shrink-0 text-white" />
                     ) : (
                       <span className="text-xs text-slate-400">
                         {String(index + 1).padStart(2, "0")}
@@ -232,10 +274,8 @@ export default function CoreServices() {
             aria-live="polite"
             className="relative overflow-hidden rounded-2xl bg-[#08152d] text-white"
           >
-
             {/* Large Service Image */}
             <div className="relative aspect-[8/5] w-full overflow-hidden bg-slate-100">
-
               <Image
                 key={service.image}
                 src={service.image}
@@ -260,7 +300,6 @@ export default function CoreServices() {
 
             {/* Service Information */}
             <div className="relative overflow-hidden p-6 sm:p-8 lg:p-10">
-
               {/* Decorative Background Number */}
               <span
                 aria-hidden="true"
@@ -270,13 +309,9 @@ export default function CoreServices() {
               </span>
 
               <div className="relative z-10">
-
                 <div className="mb-5 flex items-center gap-3">
                   <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/15 bg-white/5">
-                    <ActiveIcon
-                      size={23}
-                      strokeWidth={1.6}
-                    />
+                    <ActiveIcon size={23} strokeWidth={1.6} />
                   </div>
 
                   <span className="text-xs font-semibold uppercase tracking-[0.2em] text-red-400">
@@ -293,7 +328,6 @@ export default function CoreServices() {
                 </p>
 
                 <div className="mt-7 flex flex-wrap items-center justify-between gap-5 border-t border-white/10 pt-6">
-
                   <Link
                     href={`/services/${service.slug}`}
                     className="group inline-flex items-center gap-3 rounded-lg bg-red-600 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-red-700"
@@ -306,10 +340,7 @@ export default function CoreServices() {
                   </Link>
 
                   {/* Progress Indicator */}
-                  <div
-                    aria-hidden="true"
-                    className="flex items-center gap-1.5"
-                  >
+                  <div aria-hidden="true" className="flex items-center gap-1.5">
                     {services.map((item, index) => (
                       <span
                         key={item.slug}
@@ -321,44 +352,10 @@ export default function CoreServices() {
                       />
                     ))}
                   </div>
-
                 </div>
               </div>
             </div>
           </div>
-        </div>
-
-        {/* Bottom Information Strip */}
-        <div className="mt-8 grid grid-cols-1 divide-y divide-slate-200 rounded-xl border border-slate-200 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
-
-          {[
-            {
-              number: "09",
-              label: "Specialized Solutions",
-            },
-            {
-              number: "01",
-              label: "Integrated Approach",
-            },
-            {
-              number: "360°",
-              label: "Infrastructure Solutions",
-            },
-          ].map((item) => (
-            <div
-              key={item.label}
-              className="flex items-center justify-center gap-4 px-5 py-6"
-            >
-              <span className="text-3xl font-bold tracking-tight text-[#203164]">
-                {item.number}
-              </span>
-
-              <span className="max-w-28 text-xs font-medium leading-relaxed text-slate-500">
-                {item.label}
-              </span>
-            </div>
-          ))}
-
         </div>
       </div>
     </section>
