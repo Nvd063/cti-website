@@ -25,8 +25,8 @@ export default function Industries() {
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
 
-        {/* Heading */}
-        <div className="mb-8 text-center md:mb-12">
+        {/* Section Heading */}
+        <div className="mb-7 text-center md:mb-12">
           <h2
             id="industries-heading"
             className="text-2xl font-bold tracking-tight text-[#203164] md:text-4xl"
@@ -37,46 +37,39 @@ export default function Industries() {
           <div className="mx-auto mt-3 h-[3px] w-12 rounded-full bg-red-600" />
         </div>
 
-        {/* Horizontal Industries Row */}
-        <div
-          tabIndex={0}
-          role="region"
-          aria-label="Industries list"
-          className="flex w-full snap-x snap-mandatory items-center overflow-x-auto scroll-smooth pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:overflow-visible lg:pb-0"
-        >
+        {/* Responsive Industries Layout */}
+        <div className="grid grid-cols-3 gap-2 sm:gap-4 lg:flex lg:items-center lg:gap-0">
+
           {industries.map((industry) => {
             const Icon = industry.icon;
 
             return (
               <div
                 key={industry.name}
-                className="group flex min-w-[120px] shrink-0 snap-start flex-col items-center justify-center border-r border-slate-200 px-4 py-3 last:border-r-0 sm:min-w-[150px] lg:min-w-0 lg:flex-1"
+                className="group flex min-w-0 flex-col items-center justify-center rounded-xl bg-slate-50 px-1 py-5 transition-colors duration-300 hover:bg-red-50 sm:px-4 lg:flex-1 lg:rounded-none lg:border-r lg:border-slate-200 lg:bg-transparent lg:py-3 lg:last:border-r-0 lg:hover:bg-transparent"
               >
 
                 {/* Industry Icon */}
-                <div className="mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-slate-50 transition-colors duration-300 group-hover:bg-red-50 md:mb-4 md:h-20 md:w-20">
+                <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full transition-colors duration-300 lg:mb-4 lg:h-20 lg:w-20 lg:bg-slate-50 lg:group-hover:bg-red-50">
+
                   <Icon
                     aria-hidden="true"
                     strokeWidth={1.5}
-                    className="h-8 w-8 text-[#203164] transition-colors duration-300 group-hover:text-red-600 md:h-11 md:w-11"
+                    className="h-8 w-8 text-[#203164] transition-colors duration-300 group-hover:text-red-600 lg:h-11 lg:w-11"
                   />
+
                 </div>
 
                 {/* Industry Name */}
-                <h3 className="whitespace-nowrap text-center text-xs font-semibold text-[#203164] md:text-base">
+                <h3 className="text-center text-[11px] font-semibold text-[#203164] sm:text-sm lg:text-base">
                   {industry.name}
                 </h3>
 
               </div>
             );
           })}
+
         </div>
-
-        {/* Mobile Swipe Hint */}
-        <p className="mt-4 text-center text-[11px] tracking-wide text-slate-400 lg:hidden">
-          Swipe to explore industries →
-        </p>
-
       </div>
     </section>
   );
