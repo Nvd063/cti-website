@@ -24,7 +24,7 @@ export default function Header() {
         {/* Logo */}
         <Link href="/">
           <Image
-            src="/images/logo/cti-logo.webp"
+            src="/images/logo/cti-logo.jpg"
             alt="CTI System and Solutions"
             width={110}
             height={65}

@@ -1,7 +1,9 @@
+import HeroSlider from "@/components/home/HeroSlider";
+
 export default function Home() {
   return (
     <main>
-      <h1>CTI Website</h1>
+      <HeroSlider />
     </main>
   );
 }
