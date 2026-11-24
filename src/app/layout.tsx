@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import Header from "@/components/header/Header";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "CTI",
+  title: "CTI | System & Solutions",
   description: "Explore CTI products, services and solutions.",
 };
 
@@ -13,7 +14,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <Header />
+        {children}
+      </body>
     </html>
   );
 }
