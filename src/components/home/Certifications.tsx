@@ -1,36 +1,47 @@
+
 import Image from "next/image";
 
 const certifications = [
-  { name: "LPCB", image: "/images/certifications/lpcb.webp" },
-  { name: "CE", image: "/images/certifications/ce.webp" },
-  { name: "UL", image: "/images/certifications/ul.webp" },
-  { name: "ISO 9001", image: "/images/certifications/iso.webp" },
-  { name: "NFPA", image: "/images/certifications/nfpa.webp" },
-  { name: "UKAS", image: "/images/certifications/ukas.webp" },
-  { name: "FM Approved", image: "/images/certifications/fm.webp" },
+  {
+    name: "LPCB",
+    image: "/images/certifications/LPCB1.jpg",
+  },
+  {
+    name: "CE",
+    image: "/images/certifications/CE.jfif",
+  },
+  {
+    name: "UL",
+    image: "/images/certifications/UL.jpg",
+  },
+  {
+    name: "ISO 9001",
+    image: "/images/certifications/iso.png",
+  },
+  {
+    name: "NFPA",
+    image: "/images/certifications/NFPA.webp",
+  },
+  {
+    name: "UKAS",
+    image: "/images/certifications/ukas.jpg",
+  },
+  {
+    name: "FM Approved",
+    image: "/images/certifications/FM.png",
+  },
 ];
 
 export default function Certifications() {
   return (
     <section
       aria-labelledby="certifications-heading"
-      className="w-full overflow-hidden border-y border-slate-200 bg-[#f8fafc] py-10 md:py-14"
+      className="w-full border-t border-slate-100 bg-white py-10 md:py-14"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
 
         {/* Section Heading */}
-        <div className="mb-8 text-center md:mb-10">
-
-          <div className="mb-3 flex items-center justify-center gap-3">
-            <span className="h-px w-6 bg-red-600" />
-
-            <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-red-600 md:text-xs">
-              Quality & Compliance
-            </span>
-
-            <span className="h-px w-6 bg-red-600" />
-          </div>
-
+        <div className="mb-8 text-center md:mb-12">
           <h2
             id="certifications-heading"
             className="text-2xl font-bold tracking-tight text-[#203164] md:text-4xl"
@@ -38,40 +49,33 @@ export default function Certifications() {
             Certifications & Standards
           </h2>
 
+          <div className="mx-auto mt-3 h-[3px] w-12 rounded-full bg-red-600" />
         </div>
 
         {/* Certification Logos */}
-        <div
-          tabIndex={0}
-          role="region"
-          aria-label="Certification logos"
-          className="flex w-full snap-x snap-mandatory items-center overflow-x-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:overflow-visible"
-        >
+        <div className="flex flex-wrap items-center justify-center gap-y-6 lg:flex-nowrap lg:gap-y-0">
+
           {certifications.map((item) => (
             <div
               key={item.name}
-              className="group flex min-w-[120px] shrink-0 snap-start items-center justify-center border-r border-slate-200 px-5 py-3 last:border-r-0 sm:min-w-[145px] lg:min-w-0 lg:flex-1"
+              className="group flex w-1/4 min-w-0 items-center justify-center px-2 sm:px-4 lg:flex-1"
             >
-              <div className="relative h-[65px] w-[95px] md:h-[85px] md:w-[120px]">
+              <div className="relative h-[65px] w-full max-w-[85px] bg-white sm:h-[85px] sm:max-w-[110px] lg:h-[100px] lg:max-w-[130px]">
 
                 <Image
                   src={item.image}
                   alt={item.name}
                   fill
-                  sizes="(max-width: 768px) 95px, 120px"
-                  className="object-contain opacity-80 grayscale transition-all duration-300 group-hover:scale-105 group-hover:opacity-100 group-hover:grayscale-0"
+                  unoptimized={item.image.endsWith(".jfif")}
+                  sizes="(max-width: 640px) 85px, (max-width: 1024px) 110px, 130px"
+                  className="object-contain transition-transform duration-300 motion-safe:group-hover:scale-105"
                 />
 
               </div>
             </div>
           ))}
+
         </div>
-
-        {/* Mobile Swipe Hint */}
-        <p className="mt-5 text-center text-[11px] text-slate-400 lg:hidden">
-          Swipe to explore →
-        </p>
-
       </div>
     </section>
   );
