@@ -6,12 +6,14 @@ import NationwideCoverage from "@/components/home/NationwideCoverage";
 import CustomerReviews from "@/components/home/CustomerReviews";
 import Portfolio from "@/components/home/Portfolio";
 import PartnerBrands from "@/components/home/PartnerBrands";
+import { getFeaturedServices } from "@/services/service.service";
 
-export default function Home() {
+export default async function Home() {
+  const services = await getFeaturedServices();
   return (
     <main>
       <HeroSlider />
-      <CoreServices />
+      <CoreServices services={services} />
       <Industries />
       <Certifications />
       <NationwideCoverage />

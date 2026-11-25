@@ -5,91 +5,28 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 
+import type { Service } from "@/types/service";
+
 /* =========================================
-   SERVICES DATA
+   COMPONENT PROPS
 ========================================= */
 
-const services = [
-  {
-    name: "Fire & Safety",
-    title: "Fire Detection & Fire Safety Equipment Systems",
-    description:
-      "Integrated fire detection and protection systems for early alerts, rapid response and improved facility safety.",
-    image: "/images/services/fire-detection-safety (1) (1).webp",
-    slug: "fire-safety",
-  },
-  {
-    name: "Emergency Lighting",
-    title: "Central Battery Emergency Lighting & Exit Sign Systems",
-    description:
-      "Reliable emergency lighting and exit sign solutions for safe evacuation during power failures.",
-    image: "/images/services/central-battery-emergency-lighting (1) (1).webp",
-    slug: "emergency-lighting",
-  },
-  {
-    name: "Building Automation",
-    title: "Smart Home & Building Automation Control Systems",
-    description:
-      "Intelligent automation solutions for enhanced comfort, energy efficiency and centralized building control.",
-    image: "/images/services/smart-home-building-automation (1) (1).webp",
-    slug: "building-automation",
-  },
-  {
-    name: "PA & Sound Systems",
-    title: "PA Sound & Queue Management Systems",
-    description:
-      "Professional audio and queue management solutions for clear communication and efficient visitor flow.",
-    image: "/images/services/pa-sound-queue-management (1) (1).webp",
-    slug: "sound-system",
-  },
-  {
-    name: "Access Control",
-    title: "Door Access with Parking Barrier System",
-    description:
-      "Integrated access control and parking barrier systems for secure entry, exit and vehicle management.",
-    image: "/images/services/door-access-parking-barrier (1) (1).webp",
-    slug: "access-control",
-  },
-  {
-    name: "CCTV & Surveillance",
-    title: "CCTV & Security Surveillance Equipment",
-    description:
-      "Professional surveillance solutions for effective monitoring, recording and facility security.",
-    image: "/images/services/cctv-security (1) (1).webp",
-    slug: "cctv-security",
-  },
-  {
-    name: "Guest Room Management",
-    title: "Guest Room Management System Solutions",
-    description:
-      "Intelligent hospitality technology for guest comfort, room automation and energy management.",
-    image: "/images/services/guest-room-management (1) (1).webp",
-    slug: "guest-room",
-  },
-  {
-    name: "Nurse Call Systems",
-    title: "Nurse Call Management System Solutions",
-    description:
-      "Connected healthcare communication systems supporting patient assistance and efficient staff response.",
-    image: "/images/services/nurse-call-management (1) (1).webp",
-    slug: "nurse-call",
-  },
-  {
-    name: "Industrial UPS & Solar",
-    title: "Industrial UPS and Professional Solar System",
-    description:
-      "Reliable industrial backup power and solar energy solutions for modern infrastructure.",
-    image: "/images/services/industrial-ups-solar (1) (1).webp",
-    slug: "ups-solar",
-  },
-];
+interface CoreServicesProps {
+  services: Service[];
+}
 
 /* =========================================
    CORE SERVICES COMPONENT
 ========================================= */
 
-export default function CoreServices() {
+export default function CoreServices({
+  services,
+}: CoreServicesProps) {
   const reduceMotion = useReducedMotion();
+
+  if (!services.length) {
+    return null;
+  }
 
   return (
     <section
@@ -120,7 +57,6 @@ export default function CoreServices() {
             }}
             className="mb-6 grid items-center gap-4 lg:grid-cols-[1.5fr_1fr]"
           >
-
             <div>
 
               {/* EYEBROW */}
@@ -162,7 +98,7 @@ export default function CoreServices() {
           </motion.div>
 
           {/* =========================================
-              SERVICES GRID
+              DYNAMIC SERVICES GRID
           ========================================= */}
 
           <div className="grid auto-rows-fr grid-cols-2 gap-2.5 sm:gap-4 lg:grid-cols-4">
@@ -170,7 +106,7 @@ export default function CoreServices() {
             {services.map((service, index) => (
 
               <motion.div
-                key={service.slug}
+                key={service.id}
                 initial={
                   reduceMotion
                     ? false
@@ -196,6 +132,10 @@ export default function CoreServices() {
                 }}
                 className="h-full min-w-0"
               >
+
+                {/* =================================
+                    DYNAMIC SERVICE LINK
+                ================================= */}
 
                 <Link
                   href={`/services/${service.slug}`}

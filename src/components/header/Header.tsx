@@ -3,12 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import {
-  Phone,
-  ArrowUpRight,
-  Menu,
-  X,
-} from "lucide-react";
+import { Phone, ArrowUpRight, Menu, X } from "lucide-react";
 const navLinks = [
   { name: "Home", href: "/" },
   { name: "Store", href: "/store" },
@@ -20,8 +15,7 @@ export default function Navbar() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const isHome = pathname === "/";
-  const isGlass = isHome && !scrolled;
+  const isGlass = !scrolled;
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 30);
@@ -30,8 +24,7 @@ export default function Navbar() {
     window.addEventListener("scroll", handleScroll, {
       passive: true,
     });
-    return () =>
-      window.removeEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
   useEffect(() => {
     if (!menuOpen) return;
@@ -41,33 +34,29 @@ export default function Navbar() {
       }
     };
     window.addEventListener("keydown", handleKeyDown);
-    return () =>
-      window.removeEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [menuOpen]);
   useEffect(() => {
     const media = window.matchMedia("(min-width: 1024px)");
-    const closeOnDesktop = () => { if (media.matches) setMenuOpen(false); };
+    const closeOnDesktop = () => {
+      if (media.matches) setMenuOpen(false);
+    };
     media.addEventListener("change", closeOnDesktop);
     return () => media.removeEventListener("change", closeOnDesktop);
   }, []);
   const isActive = (href: string) =>
     href === "/"
       ? pathname === "/"
-      : pathname === href ||
-        pathname.startsWith(`${href}/`);
+      : pathname === href || pathname.startsWith(`${href}/`);
   return (
     <header
       className={`
-        z-50 w-full pointer-events-none
-        px-3 sm:px-6 lg:px-10
-        transition-all duration-500
-        ${
-          isHome
-            ? "fixed inset-x-0 top-0"
-            : "sticky top-0"
-        }
-        ${scrolled ? "py-2" : "py-3 lg:py-4"}
-      `}
+    fixed inset-x-0 top-0 z-50
+    w-full pointer-events-none
+    px-3 sm:px-6 lg:px-10
+    transition-all duration-500
+    ${scrolled ? "py-2" : "py-3 lg:py-4"}
+  `}
     >
       <button
         type="button"
@@ -157,9 +146,7 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                aria-current={
-                  isActive(link.href) ? "page" : undefined
-                }
+                aria-current={isActive(link.href) ? "page" : undefined}
                 className={`
                   relative whitespace-nowrap
                   rounded-full px-4 py-3
@@ -228,9 +215,7 @@ export default function Navbar() {
               "
             >
               <span className="sm:hidden">Contact</span>
-              <span className="hidden sm:inline">
-                Contact Our Team
-              </span>
+              <span className="hidden sm:inline">Contact Our Team</span>
               <ArrowUpRight
                 size={17}
                 className="
@@ -243,12 +228,8 @@ export default function Navbar() {
             {/* Mobile Menu Button */}
             <button
               type="button"
-              onClick={() =>
-                setMenuOpen((previous) => !previous)
-              }
-              aria-label={
-                menuOpen ? "Close menu" : "Open menu"
-              }
+              onClick={() => setMenuOpen((previous) => !previous)}
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
               aria-expanded={menuOpen}
               aria-controls="mobile-navigation"
               className="
@@ -260,11 +241,7 @@ export default function Navbar() {
                 lg:hidden
               "
             >
-              {menuOpen ? (
-                <X size={22} />
-              ) : (
-                <Menu size={22} />
-              )}
+              {menuOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
           </div>
         </div>
@@ -300,11 +277,7 @@ export default function Navbar() {
                     key={link.href}
                     href={link.href}
                     onClick={() => setMenuOpen(false)}
-                    aria-current={
-                      isActive(link.href)
-                        ? "page"
-                        : undefined
-                    }
+                    aria-current={isActive(link.href) ? "page" : undefined}
                     className={`
                       flex items-center justify-between
                       rounded-xl px-4 py-3
