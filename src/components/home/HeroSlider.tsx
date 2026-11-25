@@ -39,14 +39,6 @@ export default function HeroSlider() {
   const [isPaused, setIsPaused] = useState(false);
   const { active, progress } = slider;
   const touchStart = useRef<{ x: number; y: number } | null>(null);
-  const changeSlide = (index: number) => {
-    setSlider({
-      active:
-        ((index % slides.length) + slides.length) %
-        slides.length,
-      progress: 0,
-    });
-  };
   const nextSlide = () => {
     setSlider((previous) => ({
       active: (previous.active + 1) % slides.length,
@@ -177,49 +169,6 @@ export default function HeroSlider() {
             from-[#07152d]/20 to-transparent
           "
         />
-        {/* Floating Slide Indicators */}
-        <div
-          className="
-            absolute bottom-2 left-1/2 z-30
-            flex -translate-x-1/2 items-center gap-2
-            rounded-full border border-white/20
-            bg-[#0b1730]/45 px-3 py-1.5 lg:px-4 lg:py-3
-            shadow-lg backdrop-blur-xl
-            lg:bottom-6
-          "
-          aria-label="Choose a slide"
-        >
-          {slides.map((slide, index) => (
-            <button
-              key={slide.image}
-              type="button"
-              onClick={() => changeSlide(index)}
-              aria-label={`Show ${slide.title}`}
-              aria-current={
-                active === index ? "true" : undefined
-              }
-              className="
-                flex h-5 min-w-4 items-center
-                justify-center rounded-full
-                focus-visible:outline
-                focus-visible:outline-2
-                focus-visible:outline-white
-              "
-            >
-              <span
-                className={`
-                  block h-1.5 rounded-full
-                  transition-all duration-500
-                  ${
-                    active === index
-                      ? "w-8 bg-white"
-                      : "w-2 bg-white/45"
-                  }
-                `}
-              />
-            </button>
-          ))}
-        </div>
       </div>
       {/* Cinematic Navigation Strip */}
       <div
