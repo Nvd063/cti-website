@@ -1,5 +1,7 @@
 import "server-only";
 
+import { cacheLife } from "next/cache";
+
 import {
   blogPosts,
   blogCategories,
@@ -56,11 +58,17 @@ export async function getBlogCategories(): Promise<
 export async function getAllBlogPosts(): Promise<
   PublicBlogPost[]
 > {
+  "use cache";
+
+  cacheLife("minutes");
+
+  const currentTime = Date.now();
+
   return blogPosts
     .filter(
       (post) =>
         post.status === "PUBLISHED" &&
-        new Date(post.publishedAt).getTime() <= Date.now()
+        new Date(post.publishedAt).getTime() <= currentTime
     )
     .map(toPublicPost)
     .filter(
