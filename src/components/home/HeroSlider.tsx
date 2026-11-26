@@ -1,12 +1,22 @@
+
 "use client";
+
 import Image from "next/image";
-import { useState, useEffect, useRef } from "react";
+
+import {
+  useState,
+  useEffect,
+  useRef,
+  useSyncExternalStore,
+} from "react";
+
 import {
   ArrowLeft,
   ArrowRight,
   Pause,
   Play,
 } from "lucide-react";
+
 const slides = [
   {
     image: "/images/hero/1.png",
@@ -29,22 +39,72 @@ const slides = [
     alt: "Hotel, guest room and nurse call management systems",
   },
 ];
+
 const SLIDE_DURATION = 6000;
 const TICK_INTERVAL = 50;
+
+/* Reduced Motion Accessibility */
+
+function subscribeToReducedMotion(
+  callback: () => void
+) {
+  const media = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  );
+
+  media.addEventListener("change", callback);
+
+  return () => {
+    media.removeEventListener("change", callback);
+  };
+}
+
+function getReducedMotionSnapshot() {
+  return window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+}
+
+function getServerSnapshot() {
+  return false;
+}
+
 export default function HeroSlider() {
   const [slider, setSlider] = useState({
     active: 0,
     progress: 0,
   });
-  const [isPaused, setIsPaused] = useState(false);
+
+  const prefersReducedMotion = useSyncExternalStore(
+    subscribeToReducedMotion,
+    getReducedMotionSnapshot,
+    getServerSnapshot
+  );
+
+  const [pauseOverride, setPauseOverride] =
+    useState<boolean | null>(null);
+
+  const isPaused =
+    pauseOverride ?? prefersReducedMotion;
+
   const { active, progress } = slider;
-  const touchStart = useRef<{ x: number; y: number } | null>(null);
+
+  const touchStart = useRef<{
+    x: number;
+    y: number;
+  } | null>(null);
+
+  /* Next Slide */
+
   const nextSlide = () => {
     setSlider((previous) => ({
       active: (previous.active + 1) % slides.length,
       progress: 0,
     }));
   };
+
+  /* Previous Slide */
+
   const prevSlide = () => {
     setSlider((previous) => ({
       active:
@@ -53,24 +113,20 @@ export default function HeroSlider() {
       progress: 0,
     }));
   };
-  /* Respect Reduced Motion Preferences */
-  useEffect(() => {
-    const media = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    );
-    if (media.matches) {
-      setIsPaused(true);
-    }
-  }, []);
+
   /* Automatic Slideshow */
+
   useEffect(() => {
     if (isPaused) return;
+
     const interval = window.setInterval(() => {
       if (document.hidden) return;
+
       setSlider((previous) => {
         const nextProgress =
           previous.progress +
           (TICK_INTERVAL / SLIDE_DURATION) * 100;
+
         if (nextProgress >= 100) {
           return {
             active:
@@ -78,14 +134,17 @@ export default function HeroSlider() {
             progress: 0,
           };
         }
+
         return {
           ...previous,
           progress: nextProgress,
         };
       });
     }, TICK_INTERVAL);
+
     return () => window.clearInterval(interval);
   }, [isPaused, active]);
+
   return (
     <section
       aria-label="CTI featured solutions"
@@ -97,22 +156,40 @@ export default function HeroSlider() {
       "
     >
       {/* Cinematic Image Area */}
+
       <div
         onTouchStart={(event) => {
           const touch = event.touches[0];
-          touchStart.current = { x: touch.clientX, y: touch.clientY };
+
+          touchStart.current = {
+            x: touch.clientX,
+            y: touch.clientY,
+          };
         }}
-        onTouchCancel={() => { touchStart.current = null; }}
+        onTouchCancel={() => {
+          touchStart.current = null;
+        }}
         onTouchEnd={(event) => {
           const start = touchStart.current;
+
           touchStart.current = null;
+
           if (!start) return;
+
           const touch = event.changedTouches[0];
+
           const dx = touch.clientX - start.x;
           const dy = touch.clientY - start.y;
-          if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.5) {
-            if (dx < 0) nextSlide();
-            else prevSlide();
+
+          if (
+            Math.abs(dx) > 45 &&
+            Math.abs(dx) > Math.abs(dy) * 1.5
+          ) {
+            if (dx < 0) {
+              nextSlide();
+            } else {
+              prevSlide();
+            }
           }
         }}
         className="
@@ -125,41 +202,50 @@ export default function HeroSlider() {
           lg:min-h-0 lg:flex-1
         "
       >
-        <div className="relative aspect-[32/15] w-full lg:absolute lg:inset-0 lg:aspect-auto">
-        {slides.map((slide, index) => (
-          <div
-            key={slide.image}
-            role="group"
-            aria-roledescription="slide"
-            aria-label={`${index + 1} of ${slides.length}`}
-            aria-hidden={active !== index}
-            className={`
-              absolute inset-0
-              transition-opacity duration-700 ease-in-out
-              motion-reduce:transition-none
-              ${
-                active === index
-                  ? "z-10 opacity-100"
-                  : "z-0 opacity-0"
-              }
-            `}
-          >
-            <Image
-              src={slide.image}
-              alt={slide.alt}
-              fill
-              priority={index === 0}
-              loading={index === 0 ? undefined : "eager"}
-              sizes="100vw"
-              className="
-                object-contain object-center
-                lg:object-cover
-              "
-            />
-          </div>
-        ))}
+        <div
+          className="
+            relative aspect-[32/15] w-full
+            lg:absolute lg:inset-0 lg:aspect-auto
+          "
+        >
+          {slides.map((slide, index) => (
+            <div
+              key={slide.image}
+              role="group"
+              aria-roledescription="slide"
+              aria-label={`${index + 1} of ${slides.length}`}
+              aria-hidden={active !== index}
+              className={`
+                absolute inset-0
+                transition-opacity duration-700 ease-in-out
+                motion-reduce:transition-none
+                ${
+                  active === index
+                    ? "z-10 opacity-100"
+                    : "z-0 opacity-0"
+                }
+              `}
+            >
+              <Image
+                src={slide.image}
+                alt={slide.alt}
+                fill
+                priority={index === 0}
+                loading={
+                  index === 0 ? undefined : "eager"
+                }
+                sizes="100vw"
+                className="
+                  object-contain object-center
+                  lg:object-cover
+                "
+              />
+            </div>
+          ))}
         </div>
+
         {/* Minimal Navbar Contrast Layer */}
+
         <div
           aria-hidden="true"
           className="
@@ -170,7 +256,9 @@ export default function HeroSlider() {
           "
         />
       </div>
+
       {/* Cinematic Navigation Strip */}
+
       <div
         className="
           relative z-30 shrink-0
@@ -190,6 +278,7 @@ export default function HeroSlider() {
           "
         >
           {/* Slide Counter and Progress */}
+
           <div className="flex min-w-0 items-center gap-3 sm:gap-4">
             <span
               className="
@@ -199,6 +288,7 @@ export default function HeroSlider() {
             >
               {String(active + 1).padStart(2, "0")}
             </span>
+
             <div
               aria-hidden="true"
               className="
@@ -221,6 +311,7 @@ export default function HeroSlider() {
                 }}
               />
             </div>
+
             <span
               className="
                 text-sm font-medium tabular-nums
@@ -230,7 +321,9 @@ export default function HeroSlider() {
               {String(slides.length).padStart(2, "0")}
             </span>
           </div>
+
           {/* Current Slide Title */}
+
           <div
             aria-live={isPaused ? "polite" : "off"}
             className="
@@ -250,6 +343,7 @@ export default function HeroSlider() {
             >
               CTI Solutions
             </p>
+
             <h2
               className="
                 text-sm font-bold text-[#202f60]
@@ -259,7 +353,9 @@ export default function HeroSlider() {
               {slides[active].title}
             </h2>
           </div>
+
           {/* Slider Controls */}
+
           <div
             className="
               flex items-center justify-end
@@ -267,11 +363,10 @@ export default function HeroSlider() {
             "
           >
             {/* Pause / Play */}
+
             <button
               type="button"
-              onClick={() =>
-                setIsPaused((previous) => !previous)
-              }
+              onClick={() => setPauseOverride(!isPaused)}
               aria-label={
                 isPaused
                   ? "Play slideshow"
@@ -296,7 +391,9 @@ export default function HeroSlider() {
                 <Pause size={17} />
               )}
             </button>
+
             {/* Previous Slide */}
+
             <button
               type="button"
               onClick={prevSlide}
@@ -318,7 +415,9 @@ export default function HeroSlider() {
             >
               <ArrowLeft size={20} />
             </button>
+
             {/* Next Slide */}
+
             <button
               type="button"
               onClick={nextSlide}

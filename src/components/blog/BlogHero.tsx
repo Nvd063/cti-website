@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { ArrowDown, ChevronRight, BookOpen } from "lucide-react";
+import { ArrowDown, ChevronRight} from "lucide-react";
 
 import { motion, useReducedMotion } from "motion/react";
 

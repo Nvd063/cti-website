@@ -52,7 +52,7 @@ export default function ServiceCTA({
               <span className="h-[3px] w-8 bg-red-600" />
 
               <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-red-500">
-                Let's Work Together
+                Lets Work Together
               </span>
 
             </div>

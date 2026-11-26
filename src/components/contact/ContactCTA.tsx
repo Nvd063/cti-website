@@ -50,7 +50,7 @@ export default function ContactCTA({
               </h2>
 
               <p className="mt-2 text-xs leading-relaxed text-slate-300 sm:text-sm">
-                Let's find the right solution for your
+                Lets find the right solution for your
                 next project.
               </p>
 
