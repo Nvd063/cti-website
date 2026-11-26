@@ -28,7 +28,7 @@ const certifications = [
   },
   {
     name: "FM Approved",
-    image: "/images/certifications/FM.png",
+    image: "/images/certifications/fm.png",
   },
 ];
 
